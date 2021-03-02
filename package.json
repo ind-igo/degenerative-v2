@@ -1,0 +1,31 @@
+{
+  "name": "degen",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "generate-types": "typechain --target=ethers-v5 'abi/*.json' --outDir src/types/contracts",
+    "typecheck": "tsc --noEmit",
+    "prettier": "yarn prettier --write src/"
+  },
+  "dependencies": {
+    "ethers": "^5.0.31",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-router-dom": "^5.2.0",
+    "ts-generator": "^0.1.1",
+    "use-async-effect": "^2.2.2"
+  },
+  "devDependencies": {
+    "@typechain/ethers-v5": "^6.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@vitejs/plugin-react-refresh": "^1.1.0",
+    "hardhat": "^2.0.10",
+    "prettier": "^2.2.1",
+    "typechain": "^4.0.2",
+    "typescript": "^4.1.2",
+    "vite": "^2.0.1"
+  }
+}

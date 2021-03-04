@@ -1,21 +1,27 @@
-import React, { createContext, useState, useEffect } from "react";
-import { providers } from "ethers";
+import React, { createContext, useState, useEffect } from 'react';
+import { providers, Signer } from 'ethers';
+
+declare global {
+  interface Window {
+    ethereum: providers.ExternalProvider;
+  }
+}
 
 const initialState = {
   ethereum: undefined as providers.ExternalProvider | undefined,
   provider: undefined as providers.Web3Provider | undefined,
-  signer: undefined as providers.JsonRpcSigner | undefined,
-  chainId: 0,
-  address: null as string | null,
+  signer: undefined as Signer | undefined,
+  chainId: 0 as number,
+  account: undefined as string | undefined,
 };
 
 export const EthereumContext = createContext(initialState);
 
 const EthereumContextProvider: React.FC = ({ children }) => {
-  const [ethereum, setEthereum] = useState(window.ethereum);
+  const [ethereum, setEthereum] = useState<providers.ExternalProvider | undefined>(window.ethereum);
   const [provider, setProvider] = useState<providers.Web3Provider>();
-  const [signer, setSigner] = useState<providers.JsonRpcSigner>();
-  const [address, setAddress] = useState<string | null>(null);
+  const [signer, setSigner] = useState<Signer>();
+  const [account, setAccount] = useState<string | undefined>(undefined);
   const [chainId, setChainId] = useState<number>(1);
 
   useEffect(() => {
@@ -33,7 +39,7 @@ const EthereumContextProvider: React.FC = ({ children }) => {
     if (provider) {
       const onAccountsChanged = async () => {
         const accounts = await provider.listAccounts();
-        setAddress(accounts[0] ? accounts[0] : null);
+        setAccount(accounts[0] ? accounts[0] : undefined);
       };
 
       const onChainChanged = async () => {
@@ -42,21 +48,21 @@ const EthereumContextProvider: React.FC = ({ children }) => {
       };
 
       const onDisconnect = () => {
-        setAddress(null);
+        setAccount(undefined);
         setEthereum(undefined);
       };
 
       onAccountsChanged();
       onChainChanged();
 
-      provider.on("accountsChanged", onAccountsChanged);
-      provider.on("chainChanged", onChainChanged);
-      provider.on("disconnect", onDisconnect);
+      provider.on('accountsChanged', onAccountsChanged);
+      provider.on('chainChanged', onChainChanged);
+      provider.on('disconnect', onDisconnect);
 
       return () => {
-        provider.off("accountsChanged", onAccountsChanged);
-        provider.off("chainChanged", onAccountsChanged);
-        provider.off("disconnect", onDisconnect);
+        provider.off('accountsChanged', onAccountsChanged);
+        provider.off('chainChanged', onAccountsChanged);
+        provider.off('disconnect', onDisconnect);
       };
     }
   }, [provider]);
@@ -67,7 +73,7 @@ const EthereumContextProvider: React.FC = ({ children }) => {
         ethereum,
         provider,
         signer,
-        address,
+        account,
         chainId,
       }}
     >

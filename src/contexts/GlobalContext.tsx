@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 
 const initialState = {
-  setDarkMode: (darkMode_: boolean) => {},
+  setDarkMode: (toDark_: boolean) => {},
   darkMode: false,
 }
 

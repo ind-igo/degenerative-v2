@@ -1,0 +1,51 @@
+{
+  "name": "Degenerative.Finance Token List",
+  "timestamp": "2021-03-01T00:00:00+00:00",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "logoURI": "",
+  "keywords": [
+    "degenerative",
+    "yam",
+    "uma",
+    "default",
+    "list"
+  ],
+  "tokens": [
+    {
+      "address": "0x3d995510f8d82c2ea341845932b5ddde0bead9a3",
+      "chainId": 1,
+      "name": "uGas-Jan21",
+      "symbol": "UGAS-JAN21",
+      "decimals": 18,
+      "logoURI": ""
+    },
+    {
+      "address": "",
+      "chainId": 1,
+      "name": "uGas-Feb21",
+      "symbol": "UGASFEB21",
+      "decimals": 18,
+      "logoURI": ""
+    },
+    {
+      "address": "0x4e110603e70b0b5f1c403ee543b37e1f1244cf28",
+      "chainId": 1,
+      "name": "uGas-Mar21",
+      "symbol": "UGASMAR21",
+      "decimals": 18,
+      "logoURI": ""
+    },
+    {
+      "address": "0x0000000000000000000000000000000000000000",
+      "chainId": 1,
+      "name": "uGas-Apr21",
+      "symbol": "UGASAPR21",
+      "decimals": 18,
+      "logoURI": ""
+    }
+ ]
+}

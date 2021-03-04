@@ -4,4 +4,5 @@ dist
 dist-ssr
 *.local
 src/types/contracts
+degen-sdk/types
 .env

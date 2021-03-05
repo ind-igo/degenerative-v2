@@ -1,13 +1,13 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from 'react';
 
 const initialState = {
   setDarkMode: (toDark_: boolean) => {},
   darkMode: false,
-}
+};
 
 export const GlobalContext = React.createContext(initialState);
 
-export const GlobalContextProvider: React.FC = ({children}) => {
+export const GlobalProvider: React.FC = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false);
   // TODO add logic to change color scheme
 
@@ -24,6 +24,4 @@ export const GlobalContextProvider: React.FC = ({children}) => {
       {children}
     </GlobalContext.Provider>
   );
-}
-
-export default GlobalContextProvider;
+};

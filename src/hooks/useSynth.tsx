@@ -18,11 +18,14 @@ const useSynth = (synthName: string) => {
   const onMint = useCallback(async () => {
     setMinting(true);
     try {
-      const result = await mint();
+      //const result = await mint();
     } catch (err) {
     } finally {
+      setMinting(false);
     }
   }, [tokenAmount, collateralAmount]);
+
+  const onRedeem = useCallback(() => {}, []);
 
   return {
     minting,
@@ -32,6 +35,7 @@ const useSynth = (synthName: string) => {
     collateralAmount,
     setCollateralAmount,
     onMint,
+    onRedeem,
   };
 };
 

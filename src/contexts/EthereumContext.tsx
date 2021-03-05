@@ -17,7 +17,7 @@ const initialState = {
 
 export const EthereumContext = createContext(initialState);
 
-const EthereumContextProvider: React.FC = ({ children }) => {
+export const EthereumProvider: React.FC = ({ children }) => {
   const [ethereum, setEthereum] = useState<providers.ExternalProvider | undefined>(window.ethereum);
   const [provider, setProvider] = useState<providers.Web3Provider>();
   const [signer, setSigner] = useState<Signer>();
@@ -82,4 +82,4 @@ const EthereumContextProvider: React.FC = ({ children }) => {
   );
 };
 
-export default EthereumContextProvider;
+export default EthereumProvider;

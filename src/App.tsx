@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from 'react';
+import ContextProviders from 'contexts';
+import Pages from 'pages';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-      </header>
-    </div>
+    <ContextProviders>
+      <Pages />
+    </ContextProviders>
   );
 }
 

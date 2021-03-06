@@ -1,5 +1,5 @@
 import React from 'react';
-import { EthereumProvider } from 'contexts/EthereumContext';
+import { EthereumProvider } from './EthereumContext';
 import { GlobalProvider } from './GlobalContext';
 
 const ContextProviders: React.FC = ({ children }) => {

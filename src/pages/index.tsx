@@ -3,16 +3,18 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Landing from './Landing';
 import Dashboard from './Dashboard';
-import Asset from './Asset';
+import SynthPage from './SynthPage';
 
-export default () => {
+export const index: React.FC = () => {
   return (
     <Router>
       <Switch>
         <Route exact strict path="/" component={Landing} />
         <Route exact strict path="/dashboard" component={Dashboard} />
-        <Route exact strict path="/asset/:synthName" component={Asset} />
+        <Route exact strict path="/synth/:synthName" component={SynthPage} />
       </Switch>
     </Router>
   );
 };
+
+export default index;

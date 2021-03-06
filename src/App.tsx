@@ -1,13 +1,13 @@
 import React from 'react';
-import ContextProviders from 'contexts';
-import Pages from 'pages';
+import ContextProviders from '@/contexts';
+import Pages from '@/pages';
 
-function App() {
+const App: React.FC = () => {
   return (
     <ContextProviders>
       <Pages />
     </ContextProviders>
   );
-}
+};
 
 export default App;

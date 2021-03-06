@@ -1,7 +1,9 @@
 import React from 'react';
 
-const Landing = () => {
-  return <div></div>;
+import Button from '@/components/Button';
+
+const Landing: React.FC = () => {
+  return <Button />;
 };
 
 export default Landing;

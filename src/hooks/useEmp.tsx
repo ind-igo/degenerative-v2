@@ -1,10 +1,10 @@
 // Hook to interface with EMP contracts
-import React, { useState, useContext, useCallback, useEffect } from 'react';
-
-import { EthereumContext } from 'contexts/EthereumContext';
-import { Emp__factory, Emp } from 'types/contracts';
-import Unsigned from 'types/Unsigned';
+import { useState, useContext, useCallback, useEffect } from 'react';
 import { utils, Signer, BigNumber } from 'ethers';
+
+import { EthereumContext } from '@/contexts/EthereumContext';
+import { Emp__factory, Emp } from '@/types/contracts';
+import Unsigned from '@/types/Unsigned';
 
 export const useEmp = (empAddress: string) => {
   const { chainId, provider, signer } = useContext(EthereumContext);
@@ -16,7 +16,7 @@ export const useEmp = (empAddress: string) => {
   }, [provider, signer, empAddress]);
 
   const mint = useCallback(
-    async (collateral: string, tokens: string) => {
+    async (collateral: number, tokens: number) => {
       try {
         const gasLimit = await empContract.estimateGas.create(new Unsigned(collateral), new Unsigned(tokens));
         const response = await empContract.create(new Unsigned(collateral), new Unsigned(tokens), {
@@ -25,10 +25,7 @@ export const useEmp = (empAddress: string) => {
         // TODO log transaction to analytics service
         return response;
       } catch (err) {
-        console.error(err.message);
-        console.error(err.transaction);
-        console.error(err.transactionHash);
-        console.error(err.receipt);
+        console.error(err);
       }
     },
     [provider]

@@ -12,7 +12,7 @@ const Sidebar = () => {
           href="#"
           className="margin-left-6 flex-row-middle padding-left-3 padding-right-3 tablet-absolute-top tablet-min-width-viewport-full tablet-margin-0 tablet-padding-4 w-inline-block"
         >
-          <img src="src/assets/zombie_head_small.png" loading="lazy" alt="A cute degen zombie head as the logo" className="degen margin-right-2" />
+          <img src="src/assets/zombie_head_large.png" loading="lazy" alt="A cute degen zombie head as the logo" className="degen margin-right-2" />
           <h5 className="margin-0 margin-right-2 expand">Degenerative</h5>
           <div className="pill">v 2.0</div>
         </a>
@@ -24,9 +24,9 @@ const Sidebar = () => {
             <div className="nav-divider margin-y-5" />
             <h6 className="margin-left-8 padding-left-3 tablet-padding-left-0 tablet-margin-left-3">Learn</h6>
             <SidebarButton text="Tutorial" icon="FileText" href="#" />
-            <SidebarButton text="Docs" icon="FileText" href="#" />
-            <SidebarButton text="FAQs" icon="Book" href="#" />
-            <SidebarButton text="Support" icon="HelpCircle" href="#" />
+            <SidebarButton text="Docs" icon="Book" href="#" />
+            <SidebarButton text="FAQs" icon="HelpCircle" href="#" />
+            <SidebarButton text="Support" icon="LifeBuoy" href="#" />
             <div className="expand"></div>
             <div className="nav-divider margin-y-5"></div>
             <SidebarButton text="YAM" icon="ExternalLink" href="#" />

@@ -1,10 +1,16 @@
 import React from 'react';
 
+import Page from './Page';
+
 import Button from '@/components/Button';
-import SearchForm from '@/components/SearchForm';
+import Minter from '@/components/Minter';
 
 const Landing: React.FC = () => {
-  return null;
+  return (
+    <Page>
+      <Minter />
+    </Page>
+  );
 };
 
 export default Landing;

@@ -9,6 +9,7 @@ declare global {
 
 const initialState = {
   ethereum: undefined as providers.ExternalProvider | undefined,
+  setEthereum: (ethereum_: providers.ExternalProvider | undefined) => {},
   provider: undefined as providers.Web3Provider | undefined,
   signer: undefined as Signer | undefined,
   chainId: 0 as number,
@@ -71,6 +72,7 @@ export const EthereumProvider: React.FC = ({ children }) => {
     <EthereumContext.Provider
       value={{
         ethereum,
+        setEthereum,
         provider,
         signer,
         account,
@@ -81,5 +83,3 @@ export const EthereumProvider: React.FC = ({ children }) => {
     </EthereumContext.Provider>
   );
 };
-
-export default EthereumProvider;

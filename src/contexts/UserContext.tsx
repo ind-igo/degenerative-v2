@@ -10,7 +10,7 @@ export const UserContextProvider: React.FC = ({ children }) => {
   const [positions, setPositions] = useState([]);
 
   // TODO pull user positions for all synths
-  const updateUserPositions = (positions_: Array<object>) => {};
+  const updateUserPositions = (positions_: Array<Record<string, unknown>>) => {};
 
   return (
     <UserContext.Provider
@@ -22,5 +22,3 @@ export const UserContextProvider: React.FC = ({ children }) => {
     </UserContext.Provider>
   );
 };
-
-export default UserContextProvider;

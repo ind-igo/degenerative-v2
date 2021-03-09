@@ -28,7 +28,7 @@ export const useEmp = (empAddress: string) => {
         console.error(err);
       }
     },
-    [provider]
+    [provider, signer]
   );
 
   const redeem = () => {}; // TODO

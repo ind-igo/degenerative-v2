@@ -6,7 +6,6 @@ import { SynthAddresses } from '@/utils/Addresses';
 
 // TODO synthName comes from component, from URL
 export const useSynthState = (synthName: string) => {
-  const { chainId, provider, signer } = useContext(EthereumContext);
   const { mint, redeem, withdraw } = useEmp(SynthAddresses[synthName].emp as string);
 
   const [minting, setMinting] = useState(false);
@@ -20,6 +19,7 @@ export const useSynthState = (synthName: string) => {
         const result = await mint(collateralAmount, tokenAmount);
         if (result) {
           await result.wait();
+          // TODO Update user positions with new tokens
         }
       } catch (err) {
         console.error(err);
@@ -34,8 +34,6 @@ export const useSynthState = (synthName: string) => {
   const onRedeem = useCallback(() => {}, []);
 
   return {
-    minting,
-    setMinting,
     tokenAmount,
     setTokenAmount,
     collateralAmount,

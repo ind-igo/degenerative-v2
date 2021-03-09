@@ -3382,6 +3382,11 @@ react-router@5.2.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
+react-use-form-state@^0.13.2:
+  version "0.13.2"
+  resolved "https://registry.yarnpkg.com/react-use-form-state/-/react-use-form-state-0.13.2.tgz#907327a2479b07e51fe4f58df93fc19767cf6261"
+  integrity sha512-bP2H5V6bBFZCJIrbpUcahvJX/f5rGueOvIjg818sq3wg0aX6BFz70u81yhaSg2aCZq0aF3R8eMc2MRWIjr5yhw==
+
 react@^17.0.0:
   version "17.0.1"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.1.tgz"

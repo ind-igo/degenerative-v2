@@ -1,11 +1,15 @@
 import React from 'react';
 
 interface ButtonProps {
-  onPress: () => any;
+  text?: string;
+  onPress?: () => any;
+  color?: string;
 }
 
-const Button: React.FC<ButtonProps> = () => {
-  return <button>Click me!</button>;
+const Button: React.FC<ButtonProps> = (props) => {
+  const { onPress, text } = props;
+
+  return <button onClick={onPress}>{text}</button>;
 };
 
 export default Button;

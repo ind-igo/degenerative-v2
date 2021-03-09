@@ -6,7 +6,7 @@ import Icon from './Icon';
 
 const Sidebar = () => {
   return (
-    <>
+    <div>
       <div className="fixed-left padding-y-8 flex-column">
         <a
           href="#"
@@ -153,7 +153,7 @@ const Sidebar = () => {
         <div className="overlay blur radius-full"></div>
       </div>
       */}
-    </>
+    </div>
   );
 };
 

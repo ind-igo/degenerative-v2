@@ -14278,21 +14278,21 @@ a:hover {
 }
 @font-face {
   font-family: 'Open Sauce';
-  src: url('../assets/OpenSauceSans-Medium.ttf') format('truetype');
+  src: url('src/assets/OpenSauceSans-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Open Sauce';
-  src: url('../assets/OpenSauceSans-Regular.ttf') format('truetype');
+  src: url('src/assets/OpenSauceSans-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Open Sauce';
-  src: url('../assets/OpenSauceSans-Bold.ttf') format('truetype');
+  src: url('src/assets/OpenSauceSans-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;

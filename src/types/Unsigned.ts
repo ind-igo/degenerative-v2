@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, utils } from 'ethers';
 
 // Equivalent to Unsigned type in UMA's FixedPoint library
 
@@ -10,6 +10,6 @@ export default class Unsigned implements UnsignedInterface {
   rawValue: BigNumber;
 
   constructor(value: number | string) {
-    this.rawValue = BigNumber.from(value);
+    this.rawValue = utils.parseEther(String(value));
   }
 }

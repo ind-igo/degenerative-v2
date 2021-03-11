@@ -1,37 +1,59 @@
 import { useState, useContext, useCallback } from 'react';
-import { EthereumContext } from '@/contexts/EthereumContext';
-import useEmp from '@/hooks/useEmp';
+
+import { UserContext } from '@/contexts';
+import { useEmp, useWeth } from '@/hooks';
 
 import { SynthAddresses } from '@/utils/Addresses';
 
 // TODO synthName comes from component, from URL
 export const useSynthState = (synthName: string) => {
+  const { updateUserPositions } = useContext(UserContext);
   const { mint, redeem, withdraw } = useEmp(SynthAddresses[synthName].emp as string);
+  const { wrapEth } = useWeth();
 
-  const [minting, setMinting] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [tokenAmount, setTokenAmount] = useState(0);
   const [collateralAmount, setCollateralAmount] = useState(0);
 
-  const onMint = useCallback(async () => {
+  const onMint = async () => {
     if (collateralAmount > 0 && tokenAmount > 0) {
-      setMinting(true);
+      setLoading(true);
       try {
         const result = await mint(collateralAmount, tokenAmount);
         if (result) {
           await result.wait();
-          // TODO Update user positions with new tokens
+          updateUserPositions();
         }
       } catch (err) {
         console.error(err);
       } finally {
-        setMinting(false);
+        setLoading(false);
       }
     } else {
       console.error('Collateral amount or token amount is not greater than 0.');
     }
-  }, [tokenAmount, collateralAmount]);
+  };
 
-  const onRedeem = useCallback(() => {}, []);
+  const onRedeem = () => {};
+
+  const onWrapEth = async (ethAmount: number) => {
+    if (ethAmount > 0) {
+      setLoading(true);
+      try {
+        const result = await wrapEth(ethAmount);
+        if (result) {
+          await result.wait();
+          updateUserPositions();
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      console.error('Collateral amount or token amount is not greater than 0.');
+    }
+  };
 
   return {
     tokenAmount,
@@ -40,6 +62,7 @@ export const useSynthState = (synthName: string) => {
     setCollateralAmount,
     onMint,
     onRedeem,
+    onWrapEth,
   };
 };
 

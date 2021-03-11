@@ -1,7 +1,7 @@
 import React from 'react';
 
-const useLp = () => {
+const AllSynths = () => {
   return <div></div>;
 };
 
-export default useLp;
+export default AllSynths;

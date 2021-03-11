@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ContextProviders from '@/contexts';
 import './degenerative.css';
 
-import { Landing, Dashboard, SynthPage } from '@/pages';
+import { Landing, Dashboard, Synth, AllSynths } from '@/pages';
 import { Sidebar } from '@/components';
 
 const App: React.FC = () => {
@@ -15,7 +15,9 @@ const App: React.FC = () => {
         <Switch>
           <Route exact strict path="/" component={Landing} />
           <Route exact strict path="/dashboard" component={Dashboard} />
-          <Route exact strict path="/synth/:synthName" component={SynthPage} />
+          <Route exact strict path="/synths" component={AllSynths} />
+          <Route exact strict path="/synths/:group" component={Synth} /> {/* TODO */}
+          <Route exact strict path="/synths/:synthName" component={Synth} />
         </Switch>
       </ContextProviders>
     </Router>

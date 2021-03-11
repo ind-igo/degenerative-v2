@@ -2,13 +2,14 @@ import React from 'react';
 
 import Page from './Page';
 
-import Button from '@/components/Button';
+import ConnectWallet from '@/components/ConnectWallet';
 import Minter from '@/components/Minter';
 
 const Landing: React.FC = () => {
   return (
     <Page>
       <Minter />
+      <ConnectWallet />
     </Page>
   );
 };

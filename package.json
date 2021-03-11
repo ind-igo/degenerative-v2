@@ -5,6 +5,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
+    "fork": "hardhat node",
     "generate-types": "typechain --target=ethers-v5 'degen-sdk/abi/**/*.json' --outDir degen-sdk/types",
     "typecheck": "tsc --noEmit",
     "prettier": "yarn prettier --write src/"

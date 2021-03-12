@@ -9,7 +9,7 @@ interface MinterFormFields {
 }
 
 const Minter: React.FC = () => {
-  const { onMint, tokenAmount, setTokenAmount, collateralAmount, setCollateralAmount, onWrapEth } = useSynthState('UGASMAR21'); // TODO
+  const { onMint, tokenAmount, setTokenAmount, collateralAmount, setCollateralAmount, onWrapEth, onApprove, onGetAllowance } = useSynthState('UGASMAR21'); // TODO
 
   const [formState, { number }] = useFormState<MinterFormFields>(
     {
@@ -26,7 +26,22 @@ const Minter: React.FC = () => {
     }
   );
 
-  const EthWrapper: React.FC = () => {
+  const ApproveButton: React.FC = () => {
+    return (
+      <>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            onApprove().then(() => onGetAllowance());
+          }}
+        >
+          Approve
+        </button>
+      </>
+    );
+  };
+
+  const WrapEthButton: React.FC = () => {
     const [ethAmount, setEthAmount] = useState(0);
 
     return (
@@ -64,7 +79,8 @@ const Minter: React.FC = () => {
       >
         Mint
       </button>
-      <EthWrapper />
+      <WrapEthButton />
+      <ApproveButton />
     </div>
   );
 };

@@ -6,3 +6,5 @@ dist-ssr
 src/types/contracts
 degen-sdk/types
 .env
+artifacts
+cache

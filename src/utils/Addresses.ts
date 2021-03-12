@@ -1,14 +1,14 @@
 interface ITokenInfo {
   token: string;
-  lp?: string;
-  emp?: string;
+  lp: string;
+  emp: string;
 }
 
 interface ITokenAddresses {
   [name: string]: ITokenInfo;
 }
 
-export const CollateralAddresses: ITokenAddresses = {
+export const CollateralAddresses = {
   WETH: {
     token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
   },

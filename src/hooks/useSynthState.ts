@@ -1,7 +1,7 @@
 import { useState, useContext, useCallback } from 'react';
 
 import { UserContext } from '@/contexts';
-import { useEmp, useToken, useWeth } from '@/hooks';
+import { useEmp, useToken, useWrapEth } from '@/hooks';
 
 //import { CollateralAddresses, SynthAddresses } from '@/utils/Addresses'; // TODO replace with
 import { SynthList, CollateralList } from '@/utils/TokenList';
@@ -11,14 +11,14 @@ export const useSynthState = (synthName: string) => {
   // TODO Move this
   const synth = SynthList.find(({ type, cycle, year }) => {
     const symbol = `${type}${cycle}${year}`;
-    if (symbol === synthName) return synthName;
+    if (symbol.toUpperCase() === synthName.toUpperCase()) return synthName;
   });
-  const collateral = CollateralList.find((collat) => collat.name === synth?.collateral);
+  const collateralAddress = CollateralList.find((collat) => collat.name === synth?.collateral)?.address;
 
-  const { updateUserPositions } = useContext(UserContext); // TODO
   const emp = useEmp(synth?.emp.address as string);
-  const weth = useToken(collateral?.address as string);
-  const { wrapEth } = useWeth(); // TODO change to stateless utility function
+  console.log(synth?.emp.address);
+  const collateral = useToken(collateralAddress as string);
+  const wrapEth = useWrapEth();
 
   const [loading, setLoading] = useState(false);
   const [tokenAmount, setTokenAmount] = useState(0);
@@ -27,7 +27,7 @@ export const useSynthState = (synthName: string) => {
   const onApprove = async () => {
     setLoading(true);
     try {
-      const tx = await weth.approveSpender(synth?.emp.address as string);
+      const tx = await collateral.approveSpender(synth?.emp.address as string);
       await tx?.wait();
     } catch (err) {
       console.error(err);
@@ -63,7 +63,6 @@ export const useSynthState = (synthName: string) => {
       try {
         const txReceipt = await emp.mint(collateralAmount, tokenAmount);
         console.log(txReceipt.transactionHash);
-        updateUserPositions();
       } catch (err) {
         console.error(err);
       } finally {
@@ -84,7 +83,6 @@ export const useSynthState = (synthName: string) => {
         const result = await wrapEth(ethAmount);
         if (result) {
           await result.wait();
-          updateUserPositions();
         }
       } catch (err) {
         console.error(err);
@@ -96,7 +94,7 @@ export const useSynthState = (synthName: string) => {
     }
   };
 
-  const onGetAllowance = async () => console.log(await token.getAllowance(synth.emp));
+  const onGetAllowance = async () => console.log(await collateral.getAllowance(synth?.emp.address as string));
 
   return {
     tokenAmount,

@@ -1,23 +1,21 @@
 import React, { createContext, useState, useEffect } from 'react';
 import useAsyncEffect from 'use-async-effect';
 
-import Synth from '@/types/SynthData';
-import Token from '@/types/Token';
-
-import SynthContracts from '@/assets/contracts.json';
+import { IToken } from '@/types';
+import { SynthList } from '@/utils/TokenList';
 
 import { useEmp } from '@/hooks';
 
 interface IMintedPosition {
-  token: Token;
+  token: IToken;
   tokenAmount: number;
-  collateral: Token;
+  collateral: IToken;
   collateralAmount: number;
   collateralRatio: number;
 }
 
 interface ISynthPosition {
-  token: Token;
+  token: IToken;
   amount: number;
   priceUsd: number;
 }
@@ -45,8 +43,7 @@ export const UserContextProvider: React.FC = ({ children }) => {
   useAsyncEffect(async () => {}, []);
 
   const updateMintedPositions = () => {
-    const allSynths: Synth[] = SynthContracts;
-    const mintedPositions = allSynths.map((synth) => {
+    const mintedPositions = SynthList.map((synth) => {
       //if (synth.)
     });
   };

@@ -6,7 +6,7 @@ import { Weth__factory, Weth } from '@/types/contracts';
 
 import { WETH as wethAddress } from '@/constants/addresses';
 
-export const useWeth = () => {
+export const useWrapEth = () => {
   const { signer } = useContext(EthereumContext);
 
   const [wethContract, setWethContract] = useState<Weth>(Weth__factory.connect(wethAddress, signer as Signer));
@@ -21,9 +21,7 @@ export const useWeth = () => {
     return tx;
   };
 
-  return {
-    wrapEth,
-  };
+  return wrapEth;
 };
 
-export default useWeth;
+export default useWrapEth;

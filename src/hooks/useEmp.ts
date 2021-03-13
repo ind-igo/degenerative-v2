@@ -1,4 +1,3 @@
-// Hook to wrap EMP contracts
 import { useState, useContext, useCallback, useEffect } from 'react';
 import { Signer, BigNumber, Bytes, utils, Contract } from 'ethers';
 
@@ -7,11 +6,11 @@ import { Emp__factory, Emp } from '@/types/contracts';
 import EmpState from '@/types/EmpState';
 import Unsigned from '@/types/Unsigned';
 
+// Hook to wrap EMP contracts and certain functions
 export const useEmp = (empAddress: string) => {
   const { chainId, provider, signer } = useContext(EthereumContext);
 
   const [empContract, setEmpContract] = useState<Emp>(Emp__factory.connect(empAddress, signer as Signer));
-  //const [empState, setEmpState] = useState({} as EmpState); // TODO consider moving to context
 
   useEffect(() => {
     setEmpContract(Emp__factory.connect(empAddress, signer as Signer));
@@ -73,8 +72,6 @@ export const useEmp = (empAddress: string) => {
     [empContract]
   );
 
-  // TODO grab all EMP state data
-  // TODO return object instead
   const queryEmpState = useCallback(async () => {
     try {
       const res = (
@@ -134,6 +131,7 @@ export const useEmp = (empAddress: string) => {
     redeem,
     withdraw,
     queryEmpState,
+    //...empContract,
   };
 };
 

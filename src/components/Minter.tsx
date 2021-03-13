@@ -28,7 +28,7 @@ const Minter: React.FC = () => {
 
   const ApproveButton: React.FC = () => {
     return (
-      <>
+      <div>
         <button
           onClick={(e) => {
             e.preventDefault();
@@ -37,7 +37,7 @@ const Minter: React.FC = () => {
         >
           Approve
         </button>
-      </>
+      </div>
     );
   };
 
@@ -45,7 +45,7 @@ const Minter: React.FC = () => {
     const [ethAmount, setEthAmount] = useState(0);
 
     return (
-      <>
+      <div>
         <input
           type="number"
           value={ethAmount}
@@ -62,25 +62,27 @@ const Minter: React.FC = () => {
         >
           Wrap Eth
         </button>
-      </>
+      </div>
     );
   };
 
   return (
     <div>
-      {/*<input type="number" name="tokens" value={tokenAmount} onChange={(e) => handleCollateralAmount(e)} />*/}
-      <input {...number('tokenAmount')} required />
-      <input {...number('collateralAmount')} required />
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          onMint();
-        }}
-      >
-        Mint
-      </button>
-      <WrapEthButton />
       <ApproveButton />
+      {/*<input type="number" name="tokens" value={tokenAmount} onChange={(e) => handleCollateralAmount(e)} />*/}
+      <div>
+        <input {...number('tokenAmount')} required />
+        <input {...number('collateralAmount')} required />
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            onMint();
+          }}
+        >
+          Mint
+        </button>
+      </div>
+      <WrapEthButton />
     </div>
   );
 };

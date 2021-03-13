@@ -1,6 +1,6 @@
 // Hook to wrap EMP contracts
 import { useState, useContext, useCallback, useEffect } from 'react';
-import { Signer, utils, Contract } from 'ethers';
+import { Signer, BigNumber, Bytes, utils, Contract } from 'ethers';
 
 import { EthereumContext } from '@/contexts/EthereumContext';
 import { Emp__factory, Emp } from '@/types/contracts';
@@ -11,6 +11,7 @@ export const useEmp = (empAddress: string) => {
   const { chainId, provider, signer } = useContext(EthereumContext);
 
   const [empContract, setEmpContract] = useState<Emp>(Emp__factory.connect(empAddress, signer as Signer));
+  //const [empState, setEmpState] = useState({} as EmpState); // TODO consider moving to context
 
   useEffect(() => {
     setEmpContract(Emp__factory.connect(empAddress, signer as Signer));
@@ -26,11 +27,12 @@ export const useEmp = (empAddress: string) => {
         const tx = await empContract.create(collateralAmount, tokenAmount, {
           gasLimit: gasLimit,
         });
-        return await tx.wait();
+        const receipt = await tx.wait();
+        return receipt;
         // TODO log transaction to analytics service
       } catch (err) {
         console.error(err);
-        return Promise.reject(err.message);
+        return Promise.reject('Mint failed.');
       }
     },
     [empContract]
@@ -48,7 +50,7 @@ export const useEmp = (empAddress: string) => {
         return await tx.wait();
       } catch (err) {
         console.error(err);
-        return Promise.reject(err.message);
+        return Promise.reject('Redeem failed.');
       }
     },
     [empContract]
@@ -65,38 +67,65 @@ export const useEmp = (empAddress: string) => {
         return await tx.wait();
       } catch (err) {
         console.error(err);
-        return Promise.reject(err.message);
+        return Promise.reject('Withdraw failed.');
       }
     },
     [empContract]
   );
 
   // TODO grab all EMP state data
-  const queryEmpState = useCallback(async (): EmpState => {
+  // TODO return object instead
+  const queryEmpState = useCallback(async () => {
     try {
-      const res: EmpState = await Promise.allSettled([
-        empContract.expirationTimestamp(),
-        empContract.collateralCurrency(),
-        empContract.priceIdentifier(),
-        empContract.tokenCurrency(),
-        empContract.collateralRequirement(),
-        empContract.disputeBondPct(),
-        empContract.disputerDisputeRewardPct(),
-        empContract.sponsorDisputeRewardPct(),
-        empContract.minSponsorTokens(),
-        empContract.timerAddress(),
-        empContract.cumulativeFeeMultiplier(),
-        empContract.rawTotalPositionCollateral(),
-        empContract.totalTokensOutstanding(),
-        empContract.liquidationLiveness(),
-        empContract.withdrawalLiveness(),
-        empContract.getCurrentTime(),
-        empContract.contractState(),
-        empContract.finder(),
-        empContract.expiryPrice(),
-      ]);
+      const res = (
+        await Promise.allSettled([
+          empContract.expirationTimestamp(),
+          empContract.collateralCurrency(),
+          empContract.priceIdentifier(),
+          empContract.tokenCurrency(),
+          empContract.collateralRequirement(),
+          empContract.disputeBondPct(),
+          empContract.disputerDisputeRewardPct(),
+          empContract.sponsorDisputeRewardPct(),
+          empContract.minSponsorTokens(),
+          empContract.timerAddress(),
+          empContract.cumulativeFeeMultiplier(),
+          empContract.rawTotalPositionCollateral(),
+          empContract.totalTokensOutstanding(),
+          empContract.liquidationLiveness(),
+          empContract.withdrawalLiveness(),
+          empContract.getCurrentTime(),
+          empContract.contractState(),
+          empContract.finder(),
+          empContract.expiryPrice(),
+        ])
+      ).map((res) => (res.status === 'fulfilled' ? res.value : undefined));
+
+      return {
+        expirationTimestamp: res[0] as BigNumber,
+        collateralCurrency: res[1] as string, // address
+        priceIdentifier: res[2] as string,
+        tokenCurrency: res[3] as string, // address
+        collateralRequirement: res[4] as BigNumber,
+        disputeBondPct: res[5] as BigNumber,
+        disputerDisputeRewardPct: res[6] as BigNumber,
+        sponsorDisputeRewardPct: res[7] as BigNumber,
+        minSponsorTokens: res[8] as BigNumber,
+        timerAddress: res[9] as string, // address
+        cumulativeFeeMultiplier: res[10] as BigNumber,
+        rawTotalPositionCollateral: res[11] as BigNumber,
+        totalTokensOutstanding: res[12] as BigNumber,
+        liquidationLiveness: res[13] as BigNumber,
+        withdrawalLiveness: res[14] as BigNumber,
+        currentTime: res[15] as BigNumber,
+        isExpired: Number(res[15]) >= Number(res[0]),
+        contractState: Number(res[16]),
+        finderAddress: res[17] as string, // address
+        expiryPrice: res[18] as BigNumber,
+      };
     } catch (err) {
       console.error(err.message);
+      return Promise.reject('EMP State retrieval failed.');
     }
   }, [empContract]);
 
@@ -104,6 +133,7 @@ export const useEmp = (empAddress: string) => {
     mint,
     redeem,
     withdraw,
+    queryEmpState,
   };
 };
 

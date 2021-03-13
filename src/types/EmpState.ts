@@ -1,24 +1,24 @@
 import { BigNumber, Bytes } from 'ethers';
 
 export default interface EmpState {
-  expirationTimestamp: BigNumber | null;
-  collateralCurrency: string | null;
-  priceIdentifier: Bytes | null;
-  tokenCurrency: string | null;
-  collateralRequirement: BigNumber | null;
-  disputeBondPct: BigNumber | null;
-  disputerDisputeRewardPct: BigNumber | null;
-  sponsorDisputeRewardPct: BigNumber | null;
-  minSponsorTokens: BigNumber | null;
-  timerAddress: string | null;
-  cumulativeFeeMultiplier: BigNumber | null;
-  rawTotalPositionCollateral: BigNumber | null;
-  totalTokensOutstanding: BigNumber | null;
-  liquidationLiveness: BigNumber | null;
-  withdrawalLiveness: BigNumber | null;
-  currentTime: BigNumber | null;
-  isExpired: boolean | null;
-  contractState: number | null;
-  finderAddress: string | null;
-  expiryPrice: BigNumber | null;
+  expirationTimestamp: BigNumber | undefined;
+  collateralCurrency: string | undefined;
+  priceIdentifier: string | undefined;
+  tokenCurrency: string | undefined;
+  collateralRequirement: BigNumber | undefined;
+  disputeBondPct: BigNumber | undefined;
+  disputerDisputeRewardPct: BigNumber | undefined;
+  sponsorDisputeRewardPct: BigNumber | undefined;
+  minSponsorTokens: BigNumber | undefined;
+  timerAddress: string | undefined;
+  cumulativeFeeMultiplier: BigNumber | undefined;
+  rawTotalPositionCollateral: BigNumber | undefined;
+  totalTokensOutstanding: BigNumber | undefined;
+  liquidationLiveness: BigNumber | undefined;
+  withdrawalLiveness: BigNumber | undefined;
+  currentTime: BigNumber | undefined;
+  isExpired: boolean | undefined;
+  contractState: number | undefined;
+  finderAddress: string | undefined;
+  expiryPrice: BigNumber | undefined;
 }

@@ -1,6 +1,7 @@
-import { BigNumber, Bytes } from 'ethers';
+import { BigNumber } from 'ethers';
+import { Unsigned } from '@/types';
 
-export default interface EmpState {
+export interface IEmpState {
   expirationTimestamp: BigNumber | undefined;
   collateralCurrency: string | undefined;
   priceIdentifier: string | undefined;
@@ -21,4 +22,12 @@ export default interface EmpState {
   contractState: number | undefined;
   finderAddress: string | undefined;
   expiryPrice: BigNumber | undefined;
+}
+
+export interface IUserPositions {
+  tokensOutstanding: BigNumber;
+  withdrawalRequestPassTimeStamp: BigNumber;
+  withdrawalRequestAmount: BigNumber;
+  rawCollateral: BigNumber;
+  transferPositionRequestPassTimestamp: BigNumber;
 }

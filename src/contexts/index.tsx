@@ -1,11 +1,14 @@
 import React from 'react';
 import { EthereumProvider } from './EthereumContext';
+import { UserProvider } from './UserContext';
 import { GlobalProvider } from './GlobalContext';
 
 const ContextProviders: React.FC = ({ children }) => {
   return (
     <GlobalProvider>
-      <EthereumProvider>{children}</EthereumProvider>
+      <EthereumProvider>
+        <UserProvider>{children}</UserProvider>
+      </EthereumProvider>
     </GlobalProvider>
   );
 };

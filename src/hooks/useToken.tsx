@@ -2,19 +2,20 @@ import { useState, useContext, useEffect, useCallback } from 'react';
 
 import { Signer, utils, constants } from 'ethers';
 import { EthereumContext } from '@/contexts';
-import { Erc20, Erc20__factory } from '@/types/contracts';
+import { Erc20__factory } from '@/types/contracts';
 
-export const useToken = (tokenAddress: string) => {
+export const useToken = () => {
   const { signer, account } = useContext(EthereumContext);
 
-  const [tokenContract, setTokenContract] = useState<Erc20>(Erc20__factory.connect(tokenAddress, signer as Signer));
+  //const [tokenContract, setTokenContract] = useState<Erc20>(Erc20__factory.connect(tokenAddress, signer as Signer));
 
-  useEffect(() => {
-    setTokenContract(Erc20__factory.connect(tokenAddress, signer as Signer));
-  }, [signer, tokenAddress]);
+  //useEffect(() => {
+  //  setTokenContract(Erc20__factory.connect(tokenAddress, signer as Signer));
+  //}, [signer, tokenAddress]);
 
   const approveSpender = useCallback(
-    async (spenderAddress: string, tokenAmount?: string) => {
+    async (tokenAddress: string, spenderAddress: string, tokenAmount?: string) => {
+      const tokenContract = Erc20__factory.connect(tokenAddress, signer as Signer);
       if (signer) {
         const amount = tokenAmount ? utils.parseEther(tokenAmount) : constants.MaxUint256;
         const gasLimit = await tokenContract.estimateGas.approve(spenderAddress, amount);
@@ -25,14 +26,15 @@ export const useToken = (tokenAddress: string) => {
         return tx;
       }
     },
-    [tokenContract]
+    [signer]
   );
 
   const getAllowance = useCallback(
-    async (spender: string) => {
-      return await (await tokenContract.allowance(account as string, spender)).toString();
+    async (tokenAddress: string, spenderAddress: string) => {
+      const tokenContract = Erc20__factory.connect(tokenAddress, signer as Signer);
+      return await (await tokenContract.allowance(account as string, spenderAddress)).toString();
     },
-    [tokenContract]
+    [signer]
   );
 
   return {

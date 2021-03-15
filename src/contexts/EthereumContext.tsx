@@ -32,6 +32,7 @@ export const EthereumProvider: React.FC = ({ children }) => {
       const web3Signer = web3.getSigner();
       setSigner(web3Signer);
       setProvider(web3);
+      console.log(signer);
     }
   }, [ethereum, chainId]);
 

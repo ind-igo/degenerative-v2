@@ -5,19 +5,20 @@ import { useEmp, useToken, useWrapEth } from '@/hooks';
 
 //import { CollateralAddresses, SynthAddresses } from '@/utils/Addresses'; // TODO replace with
 import { SynthList, CollateralList } from '@/utils/TokenList';
+import { ISynthData } from '@/types';
 
 // TODO synthName comes from component, from URL
 export const useSynthState = (synthName: string) => {
-  // TODO Move this
+  // TODO Move this to component level
   const synth = SynthList.find(({ type, cycle, year }) => {
     const symbol = `${type}${cycle}${year}`;
-    if (symbol.toUpperCase() === synthName.toUpperCase()) return synthName;
-  });
-  const collateralAddress = CollateralList.find((collat) => collat.name === synth?.collateral)?.address;
+    return symbol.toUpperCase() === synthName.toUpperCase();
+  }) as ISynthData;
+  const empAddress = synth.emp.address;
+  const collateralAddress = CollateralList.find((collat) => collat.name === synth?.collateral)?.address as string;
 
-  const emp = useEmp(synth?.emp.address as string);
-  console.log(synth?.emp.address);
-  const collateral = useToken(collateralAddress as string);
+  const emp = useEmp();
+  const collateral = useToken();
   const wrapEth = useWrapEth();
 
   const [loading, setLoading] = useState(false);
@@ -27,7 +28,7 @@ export const useSynthState = (synthName: string) => {
   const onApprove = async () => {
     setLoading(true);
     try {
-      const tx = await collateral.approveSpender(synth?.emp.address as string);
+      const tx = await collateral.approveSpender(collateralAddress, empAddress);
       await tx?.wait();
     } catch (err) {
       console.error(err);
@@ -61,7 +62,7 @@ export const useSynthState = (synthName: string) => {
     if (collateralAmount > 0 && tokenAmount > 0) {
       setLoading(true);
       try {
-        const txReceipt = await emp.mint(collateralAmount, tokenAmount);
+        const txReceipt = await emp.mint(empAddress, collateralAmount, tokenAmount);
         console.log(txReceipt.transactionHash);
       } catch (err) {
         console.error(err);

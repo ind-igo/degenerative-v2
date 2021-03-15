@@ -7,5 +7,5 @@ export * from './contracts/factories/Weth__factory';
 export * from './contracts/factories/Uni__factory';
 export * from './contracts/factories/UniFactory__factory';
 export * from './contracts/factories/Yam__factory';
-export { default as EmpState } from './EmpState';
+export * from './EmpState';
 export { default as Unsigned } from './Unsigned';

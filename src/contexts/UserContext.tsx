@@ -1,21 +1,23 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import useAsyncEffect from 'use-async-effect';
+import { Signer } from 'ethers';
 
-import { IToken } from '@/types';
+import { IToken, ISynthData } from '@/types';
 import { SynthList } from '@/utils/TokenList';
 
 import { useEmp } from '@/hooks';
+import { EthereumContext } from './EthereumContext';
 
 interface IMintedPosition {
-  token: IToken;
-  tokenAmount: number;
-  collateral: IToken;
-  collateralAmount: number;
-  collateralRatio: number;
+  tokenName: string;
+  tokenAmount: string;
+  collateralName: string;
+  collateralAmount: string;
+  collateralRatio: string;
 }
 
 interface ISynthPosition {
-  token: IToken;
+  tokenName: IToken;
   amount: number;
   priceUsd: number;
 }
@@ -31,32 +33,55 @@ const initialState = {
   mintedPositions: [] as IMintedPosition[],
   synthsInWallet: [] as ISynthPosition[],
   //poolPositions: [] as IPoolPosition[],
-  updateUserPositions: () => {},
+  currentSynth: {} as ISynthData,
 };
 
 export const UserContext = React.createContext(initialState);
 
-export const UserContextProvider: React.FC = ({ children }) => {
-  const [mintedPositions, setMintedPositions] = useState([] as IMintedPosition[]);
-  const [synthsInWallet, setSynthsInWallet] = useState([] as ISynthPosition[]);
+export const UserProvider: React.FC = ({ children }) => {
+  const { signer } = useContext(EthereumContext);
+  const [mintedPositions, setMintedPositions] = useState<IMintedPosition[]>([]);
+  const [synthsInWallet, setSynthsInWallet] = useState<ISynthPosition[]>([]);
+  const [currentSynth, setCurrentSynth] = useState<ISynthData>({} as ISynthData); // TODO
 
-  useAsyncEffect(async () => {}, []);
+  const emp = useEmp();
+
+  useEffect(() => {
+    if (signer) {
+      updateMintedPositions();
+      //updateSynthsInWallet();
+    }
+  }, [signer]);
 
   const updateMintedPositions = () => {
-    const mintedPositions = SynthList.map((synth) => {
-      //if (synth.)
+    const minted: IMintedPosition[] = [];
+    SynthList.forEach(async (synth) => {
+      const { tokensOutstanding, rawCollateral } = await emp.getUserPosition(synth.emp.address);
+      if (rawCollateral.gt(0) && tokensOutstanding.gt(0)) {
+        const position: IMintedPosition = {
+          tokenName: `${synth.type}${synth.cycle}${synth.year}`.toUpperCase(),
+          tokenAmount: tokensOutstanding.toString(),
+          collateralName: synth.collateral,
+          collateralAmount: rawCollateral.toString(),
+          collateralRatio: rawCollateral.div(tokensOutstanding).toString(),
+        };
+        minted.push(position);
+      }
     });
+    setMintedPositions(minted);
   };
 
-  // TODO pull user positions for all synths
-  const updateUserPositions = () => {};
+  const updateSynthsInWallet = () => {
+    const synthsOwned: ISynthPosition[] = [];
+    SynthList.forEach(async (synth) => {});
+  };
 
   return (
     <UserContext.Provider
       value={{
         mintedPositions,
         synthsInWallet,
-        updateUserPositions,
+        currentSynth,
       }}
     >
       {children}

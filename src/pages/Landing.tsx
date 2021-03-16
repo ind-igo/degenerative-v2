@@ -1,16 +1,15 @@
 import React from 'react';
 
-import Page from './Page';
-
-import ConnectWallet from '@/components/ConnectWallet';
-import Minter from '@/components/Minter';
+import { MainDisplay, SideDisplay, ConnectWallet, Minter } from '@/components';
 
 const Landing: React.FC = () => {
   return (
-    <Page>
-      <Minter />
-      <ConnectWallet />
-    </Page>
+    <>
+      <MainDisplay>
+        <Minter />
+        <ConnectWallet />
+      </MainDisplay>
+    </>
   );
 };
 

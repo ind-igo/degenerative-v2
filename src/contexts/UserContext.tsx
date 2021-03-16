@@ -2,32 +2,11 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import useAsyncEffect from 'use-async-effect';
 import { Signer } from 'ethers';
 
-import { IToken, ISynthData } from '@/types';
-import { SynthList } from '@/utils/TokenList';
+import { ISynthData, IMintedPosition, ISynthPosition, IPoolPosition } from '@/types';
+import { SynthList, getCollateral } from '@/utils/TokenList';
 
-import { useEmp } from '@/hooks';
+import { useEmp, useUniswap } from '@/hooks';
 import { EthereumContext } from './EthereumContext';
-
-interface IMintedPosition {
-  tokenName: string;
-  tokenAmount: string;
-  collateralName: string;
-  collateralAmount: string;
-  collateralRatio: string;
-}
-
-interface ISynthPosition {
-  tokenName: IToken;
-  amount: number;
-  priceUsd: number;
-}
-
-// TODO complete this later
-interface IPoolPosition {
-  pair: string;
-  value: number;
-  apr: number;
-}
 
 const initialState = {
   mintedPositions: [] as IMintedPosition[],
@@ -45,6 +24,7 @@ export const UserProvider: React.FC = ({ children }) => {
   const [currentSynth, setCurrentSynth] = useState<ISynthData>({} as ISynthData); // TODO
 
   const emp = useEmp();
+  const { getPrice } = useUniswap();
 
   useEffect(() => {
     if (signer) {
@@ -58,11 +38,14 @@ export const UserProvider: React.FC = ({ children }) => {
     SynthList.forEach(async (synth) => {
       const { tokensOutstanding, rawCollateral } = await emp.getUserPosition(synth.emp.address);
       if (rawCollateral.gt(0) && tokensOutstanding.gt(0)) {
+        const collateral = getCollateral(synth.collateral);
         const position: IMintedPosition = {
           tokenName: `${synth.type}${synth.cycle}${synth.year}`.toUpperCase(),
           tokenAmount: tokensOutstanding.toString(),
+          // tokenPrice: await (await getPrice(synth.token, collateral)).price,
           collateralName: synth.collateral,
           collateralAmount: rawCollateral.toString(),
+          // collateralPrice:
           collateralRatio: rawCollateral.div(tokensOutstanding).toString(),
         };
         minted.push(position);
@@ -71,6 +54,7 @@ export const UserProvider: React.FC = ({ children }) => {
     setMintedPositions(minted);
   };
 
+  // TODO
   const updateSynthsInWallet = () => {
     const synthsOwned: ISynthPosition[] = [];
     SynthList.forEach(async (synth) => {});

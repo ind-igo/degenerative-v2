@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { EthereumContext, UserContext } from '@/contexts';
 
 import { MainDisplay, MainHeading, SideDisplay, ConnectWallet } from '@/components';
 import { Link } from 'react-router-dom';
 
-import { ISynthData, IMintedPosition } from '@/types';
+import { IMintedPosition, ISynthInWallet } from '@/types';
 
 interface PortfolioTableProps {
   title: string;
@@ -13,37 +13,50 @@ interface PortfolioTableProps {
 }
 
 interface MintedRowProps {
-  imgLocation: string; // TODO move to ISynthInfo type
-  synthInfo: ISynthData;
+  imgLocation: string; // TODO move to ISynthMetadata type
   mintedPosition: IMintedPosition;
 }
 
+interface SynthsInWalletRowProps {
+  imgLocation: string; // TODO move to ISynthMetadata type
+  synthsInWallet: ISynthInWallet;
+}
+
 const Portfolio = () => {
-  const { account } = useContext(EthereumContext);
-  const { mintedPositions } = useContext(UserContext);
+  const { mintedPositions, synthsInWallet } = useContext(UserContext);
+
+  useEffect(() => {
+    console.log('minted CHANGED');
+    console.log(mintedPositions);
+  }, [mintedPositions]);
+
+  useEffect(() => {
+    console.log('in wallet CHANGED');
+    console.log(synthsInWallet);
+  }, [synthsInWallet]);
 
   const MintedTableRow: React.FC<MintedRowProps> = (props) => {
-    const { type, cycle, year, collateral, token } = props.synthInfo;
-    const { tokenName, tokenAmount, collateralName, collateralAmount, collateralRatio } = props.mintedPosition;
+    const { name, collateral, type, cycle, year } = props.mintedPosition.metadata;
+    const { tokenAmount, collateralAmount, collateralRatio } = props.mintedPosition;
 
     return (
       <Link to={`/synths/${type}/${cycle}${year}`} className="table-row margin-y-2 w-inline-block">
         <div className="flex-align-center expand">
           <div className="width-10 height-10 flex-align-center flex-justify-center radius-full background-white-50 margin-right-2">
-            <img src={props.imgLocation} alt={tokenName} />
+            <img src={props.imgLocation} alt={name} />
           </div>
           <div>
-            <div className="margin-right-1 text-color-4">{tokenName}</div>
+            <div className="margin-right-1 text-color-4">{name}</div>
             <div className="text-xs opacity-50">{`${cycle} ${year}`}</div>
           </div>
         </div>
         <div className="expand">
           <div className="text-color-4">$1,000{/* TODO Placeholder */}</div>
-          <div className="text-xs opacity-50">{`${tokenAmount} ${tokenName}`}</div>
+          <div className="text-xs opacity-50">{`${tokenAmount} ${name}`}</div>
         </div>
         <div className="expand">
           <div className="text-color-4">$10,500{/* TODO Placeholder */}</div>
-          <div className="text-xs opacity-50">{`${collateralAmount} ${collateralName}`}</div>
+          <div className="text-xs opacity-50">{`${collateralAmount} ${collateral}`}</div>
         </div>
         <div className="expand">
           <div className="text-color-4">{`${collateralRatio}`}</div>
@@ -56,11 +69,49 @@ const Portfolio = () => {
             <div className="liquidation-point horizontal"></div>
           </div>
         </div>
+        <div className="expand flex-align-baseline">
+          <div className="button-secondary button-tiny margin-right-1 white">Farm</div>
+          <div className="button-secondary button-tiny white">Manage</div>
+        </div>
       </Link>
     );
   };
 
-  const PortfolioTable: React.FC<PortfolioTableProps> = ({ title, headers }) => {
+  const SynthsInWalletRow: React.FC<SynthsInWalletRowProps> = (props) => {
+    const { tokenAmount } = props.synthsInWallet;
+    const { name, type, cycle, year, expired } = props.synthsInWallet.metadata;
+
+    return (
+      <Link to={`/synths/${type}/${cycle}${year}`} className="table-row margin-y-2 w-inline-block">
+        <div className="flex-align-center expand">
+          <div className="width-10 height-10 flex-align-center flex-justify-center radius-full background-white-50 margin-right-2">
+            <img src={props.imgLocation} alt={name} />
+          </div>
+          <div>
+            <div className="margin-right-1 text-color-4">{name}</div>
+            <div className="text-xs opacity-50">{`${cycle} ${year}`}</div>
+          </div>
+        </div>
+        <div className="expand">
+          <div className="text-color-4">$1,000{/* TODO Placeholder */}</div>
+          <div className="text-xs opacity-50">{`${tokenAmount} ${name}`}</div>
+        </div>
+        <div className="expand">
+          <div className="text-color-4">$10,500{/* TODO Placeholder */}</div>
+          <div className="height-8 width-32 w-embed w-script"></div>
+        </div>
+        <div className="expand">
+          <div className={`pill ${expired ? 'red' : 'green'}`}>{expired ? 'EXPIRED' : 'LIVE'}</div>
+        </div>
+        <div className="expand flex-align-baseline">
+          <div className="button-secondary button-tiny margin-right-1 white">Farm</div>
+          <div className="button-secondary button-tiny white">Manage</div>
+        </div>
+      </Link>
+    );
+  };
+
+  const PortfolioTable: React.FC<PortfolioTableProps> = ({ title, headers, children }) => {
     return (
       <div className="margin-top-8">
         <h5 className="padding-x-8">{title}</h5>
@@ -73,18 +124,8 @@ const Portfolio = () => {
             );
           })}
         </div>
+        {children}
       </div>
-    );
-  };
-
-  const PortfolioView: React.FC = () => {
-    console.log(mintedPositions);
-    return (
-      <ul>
-        {mintedPositions.map((element, index) => {
-          return <li key={index}>{element.tokenName}</li>;
-        })}
-      </ul>
     );
   };
 
@@ -93,11 +134,23 @@ const Portfolio = () => {
       <MainDisplay>
         <MainHeading>Your Positions</MainHeading>
         <div className="padding-x-8 flex-align-baseline"></div>
-        <PortfolioTable title="Synths Minted" headers={['Token', 'Balance', 'Collateral', 'Utilization', 'Actions']}></PortfolioTable>
-        <ConnectWallet />
-        <PortfolioView />
+        <PortfolioTable title="Synths Minted" headers={['Token', 'Balance', 'Collateral', 'Utilization', 'Actions']}>
+          {mintedPositions.length > 0
+            ? mintedPositions.map((minted, index) => {
+                return <MintedTableRow imgLocation="src/assets/Box-01.png" mintedPosition={minted} key={index} />;
+              })
+            : 'You do not have any synths minted'}
+        </PortfolioTable>
+        <PortfolioTable title="Synths In Wallet" headers={['Token', 'Balance', 'Price', 'Status', 'Actions']}>
+          {synthsInWallet.length > 0
+            ? synthsInWallet.map((inWallet, index) => {
+                return <SynthsInWalletRow imgLocation="src/assets/Box-01.png" synthsInWallet={inWallet} key={index} />;
+              })
+            : 'You do not have any synths minted'}
+        </PortfolioTable>
+        {/* TODO Add pool positions */}
       </MainDisplay>
-      <SideDisplay></SideDisplay>
+      <SideDisplay>test</SideDisplay>
     </>
   );
 };

@@ -71,6 +71,7 @@ export const useEmp = () => {
 
   const getUserPosition = useCallback(
     async (synthAddress: string) => {
+      if (!account) return Promise.reject('Wallet not connected');
       const empContract = Emp__factory.connect(synthAddress, signer as Signer);
       try {
         const userPositions = await empContract.positions(account as string);
@@ -83,10 +84,10 @@ export const useEmp = () => {
         } as IUserPositions;
       } catch (err) {
         console.error(err);
-        return Promise.reject('User position retrieval failed.');
+        return Promise.reject('User position retrieval failed');
       }
     },
-    [signer]
+    [signer, account]
   );
 
   const queryEmpState = useCallback(

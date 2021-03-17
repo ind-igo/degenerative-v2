@@ -1,19 +1,20 @@
-import { IToken } from './';
+import { IToken, ISynthMetadata } from './';
 
 export interface IMintedPosition {
-  tokenName: string;
+  //tokenName: string;
   tokenAmount: string;
-  //tokenPrice: string;
-  collateralName: string;
+  //tokenPriceUsd: string;
+  //collateralName: string;
   collateralAmount: string;
-  //collateralPrice: string;
+  //collateralPriceUsd: string;
   collateralRatio: string;
+  metadata: ISynthMetadata;
 }
 
-export interface ISynthPosition {
-  tokenName: IToken;
-  amount: number;
-  priceUsd: number;
+export interface ISynthInWallet {
+  tokenAmount: string;
+  //priceUsd: number;
+  metadata: ISynthMetadata;
 }
 
 // TODO complete this later

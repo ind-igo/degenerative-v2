@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useFormState } from 'react-use-form-state';
 
 import useSynthState from '@/hooks/useSynthState';
+import { UserContext } from '@/contexts';
 
 interface MinterFormFields {
   tokenAmount: number;
@@ -9,7 +10,8 @@ interface MinterFormFields {
 }
 
 const Minter: React.FC = () => {
-  const { onMint, tokenAmount, setTokenAmount, collateralAmount, setCollateralAmount, onWrapEth, onApprove, onGetAllowance } = useSynthState('UGASMAR21'); // TODO
+  const { setSynth } = useContext(UserContext);
+  const { onMint, tokenAmount, setTokenAmount, collateralAmount, setCollateralAmount, onWrapEth, onApprove, onGetAllowance } = useSynthState();
 
   const [formState, { number }] = useFormState<MinterFormFields>(
     {

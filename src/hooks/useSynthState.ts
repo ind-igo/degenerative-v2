@@ -1,21 +1,36 @@
-import { useState, useContext, useCallback } from 'react';
+import { useState, useContext, useEffect } from 'react';
 
 import { UserContext } from '@/contexts';
 import { useEmp, useToken, useWrapEth } from '@/hooks';
 
 //import { CollateralAddresses, SynthAddresses } from '@/utils/Addresses'; // TODO replace with
-import { SynthList, CollateralList } from '@/utils/TokenList';
-import { ISynthData } from '@/types';
+import { getCollateral } from '@/utils/TokenList';
+import { ISynthInfo } from '@/types';
 
 // TODO synthName comes from component, from URL
-export const useSynthState = (synthName: string) => {
+export const useSynthState = () => {
+  const { currentSynth } = useContext(UserContext);
   // TODO Move this to component level
-  const synth = SynthList.find(({ type, cycle, year }) => {
-    const symbol = `${type}${cycle}${year}`;
-    return symbol.toUpperCase() === synthName.toUpperCase();
-  }) as ISynthData;
-  const empAddress = synth.emp.address;
-  const collateralAddress = CollateralList.find((collat) => collat.name === synth?.collateral)?.address as string;
+  //const synth = SynthList.find(({ type, cycle, year }) => {
+  //const symbol = `${type}${cycle}${year}`;
+  //return symbol.toUpperCase() === synthName.toUpperCase();
+  //}) as ISynthInfo;
+
+  //if (currentSynth) {
+  //  console.log(currentSynth);
+  //  const empAddress = currentSynth.emp.address;
+  //  //console.log(getCollateral(currentSynth.metadata.collateral));
+  //  //const collateralAddress = getCollateral(currentSynth.metadata.collateral).address;
+  //  const collateralAddress = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
+  //}
+  const [empAddress, setEmpAddress] = useState('');
+  const [collateralAddress, setCollateralAddress] = useState('');
+
+  useEffect(() => {
+    console.log("WE'RE HERE");
+    setEmpAddress(currentSynth.emp.address);
+    setCollateralAddress(getCollateral(currentSynth.metadata.collateral).address);
+  }, [currentSynth]);
 
   const emp = useEmp();
   const collateral = useToken();
@@ -95,7 +110,7 @@ export const useSynthState = (synthName: string) => {
     }
   };
 
-  const onGetAllowance = async () => console.log(await collateral.getAllowance(synth?.emp.address as string));
+  const onGetAllowance = async () => console.log(await collateral.getAllowance(collateralAddress, empAddress));
 
   return {
     tokenAmount,

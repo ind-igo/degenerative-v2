@@ -1,5 +1,3 @@
-import { BigNumber } from 'ethers';
-
 export interface IContract {
   address: string;
 }
@@ -12,14 +10,23 @@ export interface IToken extends IContract {
   //priceUsd: number;
 }
 
-// TODO Rename to ISynthInfo
-export interface ISynthData {
-  // TODO add image location
+export interface ISynthMetadata {
+  name: string;
   type: string;
   cycle: string;
   year: string;
   collateral: string;
+  expired: boolean;
+}
+
+export interface ISynthInfo {
+  // TODO add image location
+  metadata: ISynthMetadata;
   token: IToken;
   emp: IContract;
   pool: IContract;
+}
+
+export interface IMap<T> {
+  [key: string]: T;
 }

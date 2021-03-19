@@ -15,7 +15,7 @@ const Navbar = () => {
   const Navigation: React.FC = () => {
     return (
       <div className="flex-column expand padding-right-3 tablet-padding-x-4 tablet-padding-y-8 min-height-full">
-        <SearchForm />
+        <SearchForm className="margin-left-8 margin-top-6 tablet-margin-0 w-form" />
         <NavbarButton text="Explore Synths" icon="Globe" to="/synths" />
         <NavbarButton text="Portfolio" icon="User" to="/portfolio" />
         <div className="nav-divider margin-y-5"></div>

@@ -146,7 +146,7 @@ const Portfolio = () => {
             ? synthsInWallet.map((inWallet, index) => {
                 return <SynthsInWalletRow imgLocation="src/assets/Box-01.png" synthsInWallet={inWallet} key={index} />;
               })
-            : 'You do not have any synths minted'}
+            : 'You do not have any synths in your wallet'}
         </PortfolioTable>
         {/* TODO Add pool positions */}
       </MainDisplay>

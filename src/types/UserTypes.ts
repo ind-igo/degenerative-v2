@@ -1,4 +1,5 @@
-import { IToken, ISynthMetadata } from './';
+// Types pertaining to the user
+import { ISynthMetadata } from '.';
 
 export interface IMintedPosition {
   //tokenName: string;

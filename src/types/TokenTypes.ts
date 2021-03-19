@@ -17,6 +17,8 @@ export interface ISynthMetadata {
   year: string;
   collateral: string;
   expired: boolean;
+  //apy?: number;
+  //description?: string
 }
 
 export interface ISynthInfo {
@@ -25,6 +27,15 @@ export interface ISynthInfo {
   token: IToken;
   emp: IContract;
   pool: IContract;
+}
+
+export interface ISynthMarketData {
+  tvl: string;
+  //apy: number;
+  volume24h: string;
+  marketCap: string;
+  totalSupply: string;
+  metadata: ISynthMetadata;
 }
 
 export interface IMap<T> {

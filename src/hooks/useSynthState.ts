@@ -91,25 +91,6 @@ export const useSynthState = () => {
 
   const onRedeem = () => {};
 
-  // TODO move this
-  const onWrapEth = async (ethAmount: number) => {
-    if (ethAmount > 0) {
-      setLoading(true);
-      try {
-        const result = await wrapEth(ethAmount);
-        if (result) {
-          await result.wait();
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      console.error('Collateral amount or token amount is not greater than 0.');
-    }
-  };
-
   const onGetAllowance = async () => console.log(await collateral.getAllowance(collateralAddress, empAddress));
 
   return {
@@ -119,7 +100,6 @@ export const useSynthState = () => {
     setCollateralAmount,
     onMint,
     onRedeem,
-    onWrapEth,
     onApprove,
     onGetAllowance,
   };

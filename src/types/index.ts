@@ -1,6 +1,6 @@
 export * from './TokenTypes';
 export * from './contracts';
-export * from './PortfolioTypes';
+export * from './UserTypes';
 export * from './EmpState';
 export { default as Unsigned } from './Unsigned';
 export * from './contracts/factories/Yam__factory';

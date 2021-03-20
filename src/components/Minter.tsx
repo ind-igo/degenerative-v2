@@ -9,7 +9,7 @@ interface MinterFormFields {
   collateralAmount: number;
 }
 
-const Minter: React.FC = () => {
+export const Minter: React.FC = () => {
   const { setSynth } = useContext(UserContext);
   const { onMint, tokenAmount, setTokenAmount, collateralAmount, setCollateralAmount, onWrapEth, onApprove, onGetAllowance } = useSynthState();
 
@@ -88,5 +88,3 @@ const Minter: React.FC = () => {
     </div>
   );
 };
-
-export default Minter;

@@ -6,7 +6,7 @@ type SearchProps = {
 };
 
 // TODO Add function onEnter
-const SearchForm: React.FC<SearchProps> = ({ className }) => {
+export const SearchForm: React.FC<SearchProps> = ({ className }) => {
   return (
     <div className={className}>
       <form id="email-form" name="email-form">
@@ -26,5 +26,3 @@ const SearchForm: React.FC<SearchProps> = ({ className }) => {
     </div>
   );
 };
-
-export default SearchForm;

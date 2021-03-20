@@ -1,9 +1,10 @@
-export { default as ConnectWallet } from './ConnectWallet';
-export { default as NavbarButton } from './NavbarButton';
-export { default as SearchForm } from './SearchForm';
-export { default as Icon } from './Icon';
-export { default as Breadcrumb } from './layouts/Breadcrumb';
-export { default as SideDisplay } from './layouts/SideDisplay';
+export * from './Breadcrumb';
+export * from './ConnectWallet';
+export * from './Icon';
+export * from './Minter';
+export * from './NavbarButton';
+export * from './SearchForm';
+export * from './Table';
 export * from './layouts/MainDisplay';
 export { default as Navbar } from './layouts/Navbar';
-export { default as Minter } from './Minter';
+export { default as SideDisplay } from './layouts/SideDisplay';

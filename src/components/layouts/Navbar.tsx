@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import SearchForm from '../SearchForm';
-import NavbarButton from '../NavbarButton';
-import Icon from '../Icon';
+import { SearchForm, NavbarButton, Icon } from '@/components';
 
 import { EthereumContext } from '@/contexts';
 

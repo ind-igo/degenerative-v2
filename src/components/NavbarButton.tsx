@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Icon, { IconName } from './Icon';
+import { Icon, IconName } from './Icon';
 
 interface NavbarButtonProps {
   icon?: IconName;
@@ -10,7 +10,7 @@ interface NavbarButtonProps {
   text: string;
 }
 
-const NavbarButton: React.FC<NavbarButtonProps> = ({ icon, to, text }) => {
+export const NavbarButton: React.FC<NavbarButtonProps> = ({ icon, to, text }) => {
   return (
     <Link to={to} className="nav-link w-inline-block">
       {icon && <Icon name={icon} className="icon margin-right-3" />}
@@ -18,5 +18,3 @@ const NavbarButton: React.FC<NavbarButtonProps> = ({ icon, to, text }) => {
     </Link>
   );
 };
-
-export default NavbarButton;

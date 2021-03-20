@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { EthereumContext, UserContext } from '@/contexts';
 
-import { MainDisplay, MainHeading, SideDisplay, ConnectWallet } from '@/components';
+import { MainDisplay, MainHeading, SideDisplay, Table } from '@/components';
 import { Link } from 'react-router-dom';
 
 import { IMintedPosition, ISynthInWallet } from '@/types';
@@ -111,43 +111,25 @@ const Portfolio = () => {
     );
   };
 
-  const PortfolioTable: React.FC<PortfolioTableProps> = ({ title, headers, children }) => {
-    return (
-      <div className="margin-top-8">
-        <h5 className="padding-x-8">{title}</h5>
-        <div className="flex-align-baseline text-xs padding-x-4 margin-x-4 margin-top-4 margin-bottom-3">
-          {headers.map((header, index) => {
-            return (
-              <div className="expand flex-align-center" key={index}>
-                <div className="margin-right-1">{header}</div>
-              </div>
-            );
-          })}
-        </div>
-        {children}
-      </div>
-    );
-  };
-
   return (
     <>
       <MainDisplay>
         <MainHeading>Your Positions</MainHeading>
         <div className="padding-x-8 flex-align-baseline"></div>
-        <PortfolioTable title="Synths Minted" headers={['Token', 'Balance', 'Collateral', 'Utilization', 'Actions']}>
+        <Table title="Synths Minted" headers={['Token', 'Balance', 'Collateral', 'Utilization', 'Actions']}>
           {mintedPositions.length > 0
             ? mintedPositions.map((minted, index) => {
                 return <MintedTableRow imgLocation="src/assets/Box-01.png" mintedPosition={minted} key={index} />;
               })
             : 'You do not have any synths minted'}
-        </PortfolioTable>
-        <PortfolioTable title="Synths In Wallet" headers={['Token', 'Balance', 'Price', 'Status', 'Actions']}>
+        </Table>
+        <Table title="Synths In Wallet" headers={['Token', 'Balance', 'Price', 'Status', 'Actions']}>
           {synthsInWallet.length > 0
             ? synthsInWallet.map((inWallet, index) => {
                 return <SynthsInWalletRow imgLocation="src/assets/Box-01.png" synthsInWallet={inWallet} key={index} />;
               })
             : 'You do not have any synths in your wallet'}
-        </PortfolioTable>
+        </Table>
         {/* TODO Add pool positions */}
       </MainDisplay>
       <SideDisplay>test</SideDisplay>

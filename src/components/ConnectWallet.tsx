@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { EthereumContext } from '@/contexts';
 
-const ConnectWalletButton: React.FC = () => {
+export const ConnectWallet: React.FC = () => {
   const { setEthereum } = useContext(EthereumContext);
 
   const onPress = async () => {
@@ -26,5 +26,3 @@ const ConnectWalletButton: React.FC = () => {
     </button>
   );
 };
-
-export default ConnectWalletButton;

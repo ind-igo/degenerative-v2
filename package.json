@@ -6,7 +6,7 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "fork": "hardhat node",
-    "generate-types": "typechain --target=ethers-v5 'abi/*.json' --outDir src/types/contracts",
+    "prebuild": "typechain --target=ethers-v5 'abi/*.json' --outDir src/types/contracts",
     "typecheck": "tsc --noEmit",
     "prettier": "yarn prettier --write src/"
   },

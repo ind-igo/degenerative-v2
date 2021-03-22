@@ -19,7 +19,7 @@ const Explore = () => {
   }, []);
 
   const SynthBlock: React.FC<{ synth: ISynthInfo }> = ({ synth }) => {
-    const { name, expired } = synth.metadata;
+    const { type, cycle, year, name, expired } = synth.metadata;
     const { loading, error, data: marketData } = useQuery(UNISWAP_MARKET_DATA_QUERY, {
       variables: {
         poolAddress: synth.pool.address,
@@ -32,7 +32,10 @@ const Explore = () => {
     // TODO add description, APY, and set sidebar
     return (
       <>
-        <Link to={`/synths/${name}`} className="padding-8 flex-column-centered radius-xl box-shadow-large text-align-center relative w-inline-block">
+        <Link
+          to={`/synths/${type}/${cycle}${year}`}
+          className="padding-8 flex-column-centered radius-xl box-shadow-large text-align-center relative w-inline-block"
+        >
           <img src="src/assets/Box-01.png" loading="lazy" alt="" className="width-16" />
           <h5 className="margin-top-4">{name}</h5>
           <p className="text-small opacity-60">Lorem ipsum dolor sit amet, adipiscing</p>

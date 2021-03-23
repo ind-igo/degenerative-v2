@@ -9,8 +9,6 @@ export const useSynthState = () => {
   const [collateralAddress, setCollateralAddress] = useState('');
 
   useEffect(() => {
-    console.log("WE'RE HERE");
-    console.log(currentSynth);
     if (currentSynth && currentCollateral) {
       setEmpAddress(currentSynth.emp.address);
       setCollateralAddress(currentCollateral.address);

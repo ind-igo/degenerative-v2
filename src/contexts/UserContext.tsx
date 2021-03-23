@@ -15,8 +15,8 @@ const initialState = {
   //poolPositions: [] as IPoolPosition[],
   setSynth: (name: string) => {},
   //getMarketData: () => {},
-  currentSynth: {} as ISynthInfo | undefined,
-  currentCollateral: {} as IToken | undefined,
+  currentSynth: {} as ISynthInfo,
+  currentCollateral: {} as IToken,
 };
 
 export const UserContext = createContext(initialState);
@@ -32,16 +32,13 @@ export const UserProvider: React.FC = ({ children }) => {
   const erc20 = useToken();
   const { getPrice } = useUniswap();
 
-  const setSynth = (name: string) => {
-    console.log(name);
-    setCurrentSynth(SynthMap[name]);
-  };
-
+  /*
   // TODO DEBUG
   useEffect(() => {
     console.log(SynthMap);
     setCurrentSynth(SynthMap['UGASMAR21']);
   }, []);
+  */
 
   useEffect(() => {
     if (currentSynth) {
@@ -58,6 +55,12 @@ export const UserProvider: React.FC = ({ children }) => {
       //getMarketData();
     }
   }, [signer, account]);
+
+  const setSynth = (name: string) => {
+    console.log('SET SYNTH CALLED');
+    console.log(name);
+    setCurrentSynth(SynthMap[name]);
+  };
 
   const updateMintedPositions = () => {
     const minted: IMintedPosition[] = [];

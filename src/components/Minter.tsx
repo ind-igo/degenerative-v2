@@ -1,9 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
+import useAsyncEffect from 'use-async-effect';
 import { useFormState } from 'react-use-form-state';
+import { BigNumber, utils } from 'ethers';
 
 import { useSynthState, useToken } from '@/hooks';
 import { UserContext } from '@/contexts';
 import { Icon } from '@/components';
+import { ISynthInfo } from '@/types';
 
 interface MinterFormFields {
   tokenAmount: number;
@@ -11,10 +14,20 @@ interface MinterFormFields {
 }
 
 export const Minter: React.FC = () => {
-  const { setSynth, currentSynth } = useContext(UserContext);
+  const { currentSynth, currentCollateral } = useContext(UserContext);
   // TODO get max # of collateral available, user's balances
-  const synthActions = useSynthState();
+  const actions = useSynthState();
   const erc20 = useToken();
+
+  const [maxCollateral, setMaxCollateral] = useState<BigNumber>(BigNumber.from(0));
+
+  useAsyncEffect(async () => {
+    if (currentCollateral) {
+      //console.log(utils.parseEther(await erc20.getBalance(currentCollateral.address)))
+      console.log('WTF');
+      setMaxCollateral(await erc20.getBalance(currentCollateral.address));
+    }
+  }, [currentSynth, currentCollateral]);
 
   const [formState, { number }] = useFormState<MinterFormFields>(
     {
@@ -25,8 +38,8 @@ export const Minter: React.FC = () => {
       onChange: (e, stateValues, nextStateValues) => {
         const { collateralAmount, tokenAmount } = nextStateValues;
         // TODO
-        synthActions.setCollateralAmount(Number(collateralAmount));
-        synthActions.setTokenAmount(Number(tokenAmount));
+        actions.setCollateralAmount(Number(collateralAmount));
+        actions.setTokenAmount(Number(tokenAmount));
       },
     }
   );
@@ -37,7 +50,7 @@ export const Minter: React.FC = () => {
         <button
           onClick={(e) => {
             e.preventDefault();
-            synthActions.onApprove().then(() => synthActions.onGetAllowance());
+            actions.onApprove().then(() => actions.onGetAllowance());
           }}
         >
           Approve
@@ -62,7 +75,7 @@ export const Minter: React.FC = () => {
         <button
           onClick={(e) => {
             e.preventDefault();
-            synthActions.onWrapEth(ethAmount);
+            actions.onWrapEth(ethAmount);
           }}
         >
           Wrap Eth
@@ -73,6 +86,7 @@ export const Minter: React.FC = () => {
 
   const setMaximum = () => {}; // TODO
 
+  if (!currentSynth || !currentCollateral) return null;
   return (
     <div>
       {/*
@@ -84,7 +98,7 @@ export const Minter: React.FC = () => {
         <button
           onClick={(e) => {
             e.preventDefault();
-            synthActions.onMint();
+            actions.onMint();
           }}
         >
           Mint
@@ -136,12 +150,12 @@ export const Minter: React.FC = () => {
                   <div className="flex-align-baseline flex-space-between absolute-top padding-x-3 padding-top-3">
                     <label className="opacity-60 weight-medium">Deposit Collateral</label>
                     <a href="#" className="button-secondary button-tiny white w-button">
-                      Max {/* TODO erc20.getBalance(currentSynth.metadata.collateral)*/}
+                      Max {utils.formatEther(maxCollateral.toString())}
                     </a>
                   </div>
                 </div>
                 <div className="width-8 height-8 margin-auto flex-align-center flex-justify-center radius-full background-color-white inverse-margin">
-                  <img src="../images/" loading="lazy" data-feather="arrow-down" alt="" className="icon opacity-100 text-color-1" />
+                  <Icon name="ArrowDown" className="icon opacity-100 text-color-1" />
                 </div>
                 <div className="relative">
                   <input
@@ -155,23 +169,33 @@ export const Minter: React.FC = () => {
                     required
                   />
                   <div data-hover="" data-delay="0" className="margin-0 absolute-bottom-right padding-right-3 padding-bottom-4 w-dropdown">
+                    {/* TODO i think this div and dropdown are unnecessary */}
                     <div className="padding-0 flex-align-center w-dropdown-toggle">
-                      <a href="#">Synth 1</a>
+                      <a href="#">{currentSynth.metadata.name}</a>
                     </div>
-                    <nav className="dropdown-list radius-large box-shadow-medium w-dropdown-list">
-                      <a href="#" className="dropdown-link w-dropdown-link">
-                        WETH
-                      </a>
-                      <a href="#" className="dropdown-link w-dropdown-link">
-                        ETH
-                      </a>
-                    </nav>
                   </div>
                   <div className="flex-align-baseline flex-space-between absolute-top padding-x-3 padding-top-3">
                     <label className="opacity-60 weight-medium">Mint</label>
                   </div>
                 </div>
                 <div className="text-xs opacity-50 margin-top-1">Mint a minimum of 5 uSYNTH</div>
+              </div>
+            </div>
+            <div className="margin-bottom-4">
+              <div className="flex-space-between portrait-flex-column">
+                <div className="margin-bottom-1">
+                  <strong className="text-color-4">30%</strong> Utilisation after minting
+                </div>
+                <div className="margin-bottom-1 text-small opacity-60">
+                  <strong className="text-color-4">(3.5 CR)</strong>
+                </div>
+              </div>
+              <div className="gauge horizontal large overflow-hidden margin-bottom-2">
+                <div className="collateral large"></div>
+                <div className="debt horizontal">
+                  <div className="gradient horizontal large"></div>
+                </div>
+                <div className="gcr horizontal"></div>
               </div>
             </div>
           </div>

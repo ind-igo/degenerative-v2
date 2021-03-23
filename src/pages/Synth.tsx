@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
 import { useSynthState } from '@/hooks/useSynthState';
 import { UserContext } from '@/contexts';
 import { MainDisplay, MainHeading, Minter, SideDisplay } from '@/components';
+import { ISynthMetadata } from '@/types';
 
 interface SynthParams {
   group: string;
@@ -13,13 +14,18 @@ interface SynthParams {
 const Synth: React.FC = () => {
   const { group, synthName } = useParams<SynthParams>();
   const { currentSynth, setSynth } = useContext(UserContext);
-  const { name, cycle, year, type } = currentSynth.metadata;
   const state = useSynthState();
+  const [{ type, cycle, year }, setMetadata] = useState({} as ISynthMetadata);
 
   useEffect(() => {
     if (!currentSynth) setSynth(`${group}${synthName}`.toUpperCase());
-    //setSynth(synthName);
   }, []);
+
+  useEffect(() => {
+    console.log('CURRENT SYNTH CHANGED');
+    if (!currentSynth) return;
+    setMetadata(currentSynth.metadata);
+  }, [currentSynth]);
 
   const ActionSelector: React.FC = () => {
     return (
@@ -42,6 +48,7 @@ const Synth: React.FC = () => {
     );
   };
 
+  if (!currentSynth) return null;
   return (
     <>
       <MainDisplay>

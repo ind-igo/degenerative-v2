@@ -15,8 +15,8 @@ const initialState = {
   //poolPositions: [] as IPoolPosition[],
   setSynth: (name: string) => {},
   //getMarketData: () => {},
-  currentSynth: {} as ISynthInfo,
-  currentCollateral: {} as IToken,
+  currentSynth: {} as ISynthInfo | undefined,
+  currentCollateral: {} as IToken | undefined,
 };
 
 export const UserContext = createContext(initialState);

@@ -34,7 +34,7 @@
     "@vitejs/plugin-react-refresh": "^1.1.0",
     "eslint": "^7.21.0",
     "eslint-plugin-react": "^7.22.0",
-    "hardhat": "^2.0.10",
+    "hardhat": "^2.12.5",
     "prettier": "^2.2.1",
     "react-use-form-state": "^0.13.2",
     "subscriptions-transport-ws": "^0.9.18",
